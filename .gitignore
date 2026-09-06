@@ -1,0 +1,9 @@
+.worktrees/
+node_modules/
+.next/
+data/
+.env.local
+coverage/
+playwright-report/
+test-results/
+*.log
