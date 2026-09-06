@@ -1,0 +1,3 @@
+export function Highlights({ highlights }: { highlights: { id: string; markText: string; chapterTitle?: string | null }[] }) {
+  return <section className="workspace-panel"><div className="section-heading"><div><p className="eyebrow">微信读书划线</p><h2>被你停下来的句子</h2></div><span>{highlights.length} 条</span></div>{highlights.length ? <div className="highlight-list">{highlights.map((highlight) => <blockquote key={highlight.id}><p>{highlight.markText}</p>{highlight.chapterTitle ? <cite>{highlight.chapterTitle}</cite> : null}</blockquote>)}</div> : <p className="panel-empty">下次手动同步后，新划线会出现在这里。</p>}</section>;
+}

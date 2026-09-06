@@ -1,0 +1,3 @@
+export function ThoughtTimeline({ thoughts }: { thoughts: { id: string; rawContent: string; createdAt: number; suggestedType?: string | null }[] }) {
+  return <section className="workspace-panel"><div className="section-heading"><div><p className="eyebrow">思考时间线</p><h2>沿路留下的痕迹</h2></div><span>{thoughts.length} 条</span></div>{thoughts.length ? <div className="thought-timeline">{thoughts.map((thought) => <article key={thought.id}><time>{new Date(thought.createdAt).toLocaleDateString("zh-CN")}</time><p>{thought.rawContent}</p>{thought.suggestedType ? <span>{thought.suggestedType}</span> : null}</article>)}</div> : <p className="panel-empty">在今日阅读中记下的想法，会按时间回到这里。</p>}</section>;
+}
