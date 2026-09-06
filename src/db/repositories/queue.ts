@@ -33,5 +33,8 @@ export function createQueueRepository(db: ReadingDb) {
     async list(lane: QueueLane) {
       return db.select().from(queueItems).where(eq(queueItems.lane, lane)).orderBy(asc(queueItems.position));
     },
+    async updateReason(bookId: string, reason: string) {
+      await db.update(queueItems).set({ reason: reason.trim(), updatedAt: Date.now() }).where(eq(queueItems.bookId, bookId));
+    },
   };
 }

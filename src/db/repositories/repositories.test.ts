@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
 import { createDatabase, type ReadingDatabase } from "../client";
 import { createBookRepository } from "./books";
 import { createQueueRepository } from "./queue";
@@ -7,7 +6,7 @@ import { createThoughtRepository } from "./thoughts";
 
 describe("local reading repositories", () => {
   let database: ReadingDatabase;
-  let db: BetterSQLite3Database;
+  let db: ReadingDatabase["db"];
 
   beforeEach(() => {
     database = createDatabase(":memory:");
@@ -78,9 +77,9 @@ describe("local reading repositories", () => {
     await books.upsertImported({ id: "book-a", title: "甲", author: "作者" });
     const thought = await thoughts.create({ bookId: "book-a", rawContent: "原始判断" });
 
-    await thoughts.review(thought.id, "changed", "现在的看法不同了");
+    await thoughts.review(thought!.id, "changed", "现在的看法不同了");
 
-    expect(await thoughts.getById(thought.id)).toMatchObject({
+    expect(await thoughts.getById(thought!.id)).toMatchObject({
       rawContent: "原始判断",
       reviewState: "changed",
       reviewNote: "现在的看法不同了",

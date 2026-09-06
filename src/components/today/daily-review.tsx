@@ -8,6 +8,7 @@ type ReviewThought = { id: string; rawContent: string; createdAt: number };
 export function DailyReview({ thoughts }: { thoughts: ReviewThought[] }) {
   const [index, setIndex] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [today] = useState(() => Date.now());
   const thought = thoughts[index];
 
   async function review(outcome: "agreed" | "changed" | "skipped") {
@@ -38,7 +39,7 @@ export function DailyReview({ thoughts }: { thoughts: ReviewThought[] }) {
         <CornerDownRight size={15} className="text-[var(--brass)]" />
       </div>
       <blockquote className="my-5 font-serif text-xl leading-8">“{thought.rawContent}”</blockquote>
-      <p className="text-xs text-[var(--ink-faint)]">{Math.max(1, Math.round((Date.now() - thought.createdAt) / 86_400_000))} 天前留下</p>
+      <p className="text-xs text-[var(--ink-faint)]">{Math.max(1, Math.round((today - thought.createdAt) / 86_400_000))} 天前留下</p>
       <div className="mt-5 flex flex-wrap gap-2">
         <button className="quiet-button" onClick={() => void review("agreed")} disabled={saving}>仍然认同</button>
         <button className="quiet-button" onClick={() => void review("changed")} disabled={saving}>现在有不同看法</button>
