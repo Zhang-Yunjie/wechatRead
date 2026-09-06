@@ -1,21 +1,43 @@
+import { Suspense } from "react";
+import { getDatabase } from "@/db/client";
+import { getDashboardData } from "@/lib/queries/dashboard";
+import { DailyReview } from "@/components/today/daily-review";
+import { FeaturedBook } from "@/components/today/featured-book";
+import { QuickCapture } from "@/components/today/quick-capture";
+import { RecentThoughts } from "@/components/today/recent-thoughts";
+import { SideReading } from "@/components/today/side-reading";
+import { EmptyState } from "@/components/empty-state";
+
+async function TodayContent() {
+  const data = await getDashboardData(getDatabase().db);
+  return (
+    <>
+      <div className="today-grid">
+        <div>{data.mainBook ? <FeaturedBook book={data.mainBook} /> : <EmptyState title="先选一本主线书" description="同步微信读书后，从书库挑一本此刻真正想读的书。" />}</div>
+        <div className="space-y-5">
+          <QuickCapture bookTitle={data.mainBook?.title} />
+          <DailyReview thoughts={data.dueReviews} />
+          <RecentThoughts thoughts={data.recentThoughts} />
+        </div>
+      </div>
+      <SideReading books={data.sideBooks} />
+    </>
+  );
+}
+
 export default function HomePage() {
   return (
-    <main className="min-h-screen px-8 py-7 lg:px-14">
-      <header className="mx-auto flex max-w-7xl items-center justify-between border-b border-[var(--rule)] pb-5">
+    <div className="page-frame">
+      <header className="page-header">
         <div>
-          <p className="text-xs tracking-[0.22em] text-[var(--moss)]">LOCAL READING COMPANION</p>
-          <h1 className="mt-1 font-serif text-3xl tracking-tight">阅读此刻</h1>
+          <p className="eyebrow">MONDAY · SEPTEMBER 07</p>
+          <h1>阅读此刻</h1>
         </div>
-        <button className="rounded-full bg-[var(--forest)] px-5 py-2.5 text-sm text-white shadow-sm">
+        <button className="secondary-button">
           同步微信读书
         </button>
       </header>
-      <section className="mx-auto grid min-h-[70vh] max-w-7xl place-items-center text-center">
-        <div className="max-w-md">
-          <p className="font-serif text-4xl leading-tight">把读过的，慢慢变成自己的。</p>
-          <p className="mt-5 leading-7 text-[var(--ink-soft)]">同步书架后，在这里选择主线阅读，也可以随时记下一句刚刚冒出的想法。</p>
-        </div>
-      </section>
-    </main>
+      <Suspense fallback={<div className="page-loading">正在翻开今天的一页…</div>}><TodayContent /></Suspense>
+    </div>
   );
 }
