@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f3f0e7;
+  --paper-raised: #fbfaf5;
+  --ink: #20241f;
+  --ink-soft: #64685f;
+  --forest: #173f35;
+  --moss: #758474;
+  --brass: #ad874f;
+  --rule: rgba(32, 36, 31, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--paper); }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,.72), transparent 34rem),
+    var(--paper);
+  font-family: "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+
+button, input, textarea { font: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+::selection { color: white; background: var(--forest); }
