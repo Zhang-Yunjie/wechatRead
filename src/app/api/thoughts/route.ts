@@ -2,6 +2,7 @@ import { z } from "zod";
 import { getDatabase, type ReadingDb } from "@/db/client";
 import { createBookRepository } from "@/db/repositories/books";
 import { createThoughtRepository } from "@/db/repositories/thoughts";
+import { hasAIConfiguration } from "@/integrations/ai/client";
 
 const inputSchema = z.object({
   content: z.string().trim().min(1).max(10_000),
@@ -19,6 +20,9 @@ export function createThoughtAction(db: ReadingDb) {
       rawContent: parsed.data.content,
       bookId: parsed.data.bookId ?? mainBook?.id ?? null,
     });
+    if (thought && hasAIConfiguration()) {
+      void import("./[thoughtId]/enrich/route").then(({ enrichThought }) => enrichThought(thought.id)).catch(() => undefined);
+    }
     return Response.json({ thought }, { status: 201 });
   };
 }
