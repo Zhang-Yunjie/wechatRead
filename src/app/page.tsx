@@ -7,6 +7,7 @@ import { QuickCapture } from "@/components/today/quick-capture";
 import { RecentThoughts } from "@/components/today/recent-thoughts";
 import { SideReading } from "@/components/today/side-reading";
 import { EmptyState } from "@/components/empty-state";
+import { SyncButton } from "@/components/sync-button";
 
 async function TodayContent() {
   const data = await getDashboardData(getDatabase().db);
@@ -33,9 +34,7 @@ export default function HomePage() {
           <p className="eyebrow">MONDAY · SEPTEMBER 07</p>
           <h1>阅读此刻</h1>
         </div>
-        <button className="secondary-button">
-          同步微信读书
-        </button>
+        <SyncButton />
       </header>
       <Suspense fallback={<div className="page-loading">正在翻开今天的一页…</div>}><TodayContent /></Suspense>
     </div>

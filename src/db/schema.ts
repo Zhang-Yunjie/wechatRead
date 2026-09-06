@@ -34,6 +34,8 @@ export const queueItems = sqliteTable("queue_items", {
 
 export const thoughts = sqliteTable("thoughts", {
   id: text("id").primaryKey(),
+  source: text("source", { enum: ["local", "weread"] }).notNull().default("local"),
+  sourceId: text("source_id").unique(),
   bookId: text("book_id").references(() => books.id, { onDelete: "set null" }),
   rawContent: text("raw_content").notNull(),
   suggestedType: text("suggested_type"),

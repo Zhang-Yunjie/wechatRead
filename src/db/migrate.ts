@@ -15,7 +15,8 @@ export function migrate(sqlite: Database.Database) {
       created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL
     );
     CREATE TABLE IF NOT EXISTS thoughts (
-      id TEXT PRIMARY KEY, book_id TEXT REFERENCES books(id) ON DELETE SET NULL, raw_content TEXT NOT NULL,
+      id TEXT PRIMARY KEY, source TEXT NOT NULL DEFAULT 'local', source_id TEXT UNIQUE,
+      book_id TEXT REFERENCES books(id) ON DELETE SET NULL, raw_content TEXT NOT NULL,
       suggested_type TEXT, suggested_topics TEXT, enrichment_state TEXT NOT NULL DEFAULT 'pending',
       review_state TEXT NOT NULL DEFAULT 'pending', review_note TEXT, last_reviewed_at INTEGER,
       snoozed_until INTEGER, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL
