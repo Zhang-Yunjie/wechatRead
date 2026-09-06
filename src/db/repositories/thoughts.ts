@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, desc, eq, isNull, lt, or } from "drizzle-orm";
 import type { ReadingDb } from "../client";
 import { thoughts } from "../schema";
 
@@ -30,6 +30,20 @@ export function createThoughtRepository(db: ReadingDb) {
         lastReviewedAt: Date.now(),
         updatedAt: Date.now(),
       }).where(eq(thoughts.id, id));
+    },
+    async listRecent(limit = 5) {
+      return db.select().from(thoughts).orderBy(desc(thoughts.createdAt)).limit(limit);
+    },
+    async listDue(now: Date, limit = 3) {
+      const cutoff = now.getTime() - 86_400_000;
+      return db.select().from(thoughts)
+        .where(and(
+          eq(thoughts.reviewState, "pending"),
+          lt(thoughts.createdAt, cutoff),
+          or(isNull(thoughts.snoozedUntil), lt(thoughts.snoozedUntil, now.getTime())),
+        ))
+        .orderBy(thoughts.lastReviewedAt, thoughts.createdAt)
+        .limit(limit);
     },
   };
 }

@@ -57,5 +57,8 @@ export function createBookRepository(db: ReadingDb) {
     async list() {
       return db.query.books.findMany({ orderBy: (book, { desc }) => [desc(book.readUpdateTime), desc(book.updatedAt)] });
     },
+    async listByRole(role: Exclude<ReadingRole, "none">) {
+      return db.query.books.findMany({ where: eq(books.readingRole, role) });
+    },
   };
 }
