@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createDatabase, type ReadingDatabase } from "@/db/client";
 import { createBookRepository } from "@/db/repositories/books";
-import { createThoughtAction } from "./route";
+import { createThoughtAction } from "@/lib/actions/thoughts";
 
 describe("POST /api/thoughts", () => {
   let database: ReadingDatabase;

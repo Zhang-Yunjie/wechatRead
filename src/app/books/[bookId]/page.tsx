@@ -12,5 +12,5 @@ export default async function BookWorkspacePage({ params }: { params: Promise<{ 
   const { bookId } = await params;
   const data = await getBookWorkspaceData(getDatabase().db, bookId);
   if (!data.book) notFound();
-  return <div className="page-frame"><WorkspaceHeader book={data.book} /><ReadingStages bookId={bookId} reflections={data.reflections} /><div className="workspace-columns"><div className="space-y-5"><ThoughtTimeline thoughts={data.thoughts} /><Highlights highlights={data.highlights} /></div><div className="space-y-5"><ReflectionEditor bookId={bookId} /><ResourceLinks bookId={bookId} resources={data.resources} /></div></div></div>;
+  return <div className="page-frame"><WorkspaceHeader book={data.book} bookId={bookId} profile={data.profile} /><ReadingStages bookId={bookId} reflections={data.reflections} /><div className="workspace-columns"><div className="space-y-5"><ThoughtTimeline thoughts={data.thoughts} /><Highlights highlights={data.highlights} /></div><div className="space-y-5"><ReflectionEditor bookId={bookId} /><ResourceLinks bookId={bookId} resources={data.resources} /></div></div></div>;
 }

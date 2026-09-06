@@ -47,4 +47,15 @@ export function migrate(sqlite: Database.Database) {
       summary TEXT, error_message TEXT
     );
   `);
+
+  const thoughtColumns = new Set(
+    (sqlite.prepare("PRAGMA table_info(thoughts)").all() as Array<{ name: string }>).map((column) => column.name),
+  );
+  if (!thoughtColumns.has("source")) {
+    sqlite.exec("ALTER TABLE thoughts ADD COLUMN source TEXT NOT NULL DEFAULT 'local'");
+  }
+  if (!thoughtColumns.has("source_id")) {
+    sqlite.exec("ALTER TABLE thoughts ADD COLUMN source_id TEXT");
+  }
+  sqlite.exec("CREATE UNIQUE INDEX IF NOT EXISTS thoughts_source_id_unique ON thoughts(source_id)");
 }
