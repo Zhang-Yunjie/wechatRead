@@ -59,10 +59,14 @@ export function TodayReading({
         if (!active) return;
         const latest = result.progressByBookId ?? {};
         setMainBook((book) => {
-          if (!book || !validProgress(latest[book.id])) return book;
-          return { ...book, progress: latest[book.id] };
+          if (!book) return book;
+          const progress = latest[book.id];
+          return validProgress(progress) ? { ...book, progress } : book;
         });
-        setSideBooks((books) => books.map((book) => validProgress(latest[book.id]) ? { ...book, progress: latest[book.id] } : book));
+        setSideBooks((books) => books.map((book) => {
+          const progress = latest[book.id];
+          return validProgress(progress) ? { ...book, progress } : book;
+        }));
         if (result.errors?.length) setMessage("部分阅读进度暂时无法更新");
       } catch (error) {
         if (active && !(error instanceof DOMException && error.name === "AbortError")) {
