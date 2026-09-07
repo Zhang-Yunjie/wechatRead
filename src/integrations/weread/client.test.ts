@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { createWeReadClient } from "./client";
+import { createWeReadClient, getConfiguredWeReadClient } from "./client";
 
 describe("WeRead client", () => {
   it("sends a flat gateway request with server-side authorization", async () => {
@@ -21,5 +21,18 @@ describe("WeRead client", () => {
 
     await expect(client.call("/shelf/sync", {})).rejects.toThrow("invalid");
     await expect(client.call("/shelf/sync", {})).rejects.not.toThrow("secret-key");
+  });
+
+  it("resolves the configured key when each request is made", async () => {
+    let activeKey = "first-key";
+    const fetcher = vi.fn().mockImplementation(async () => new Response(JSON.stringify({ books: [] }), { status: 200 }));
+    const client = getConfiguredWeReadClient({ keyResolver: () => activeKey, fetcher });
+
+    await client.call("/shelf/sync");
+    activeKey = "second-key";
+    await client.call("/shelf/sync");
+
+    expect(fetcher.mock.calls[0][1].headers.Authorization).toBe("Bearer first-key");
+    expect(fetcher.mock.calls[1][1].headers.Authorization).toBe("Bearer second-key");
   });
 });

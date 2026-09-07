@@ -1,18 +1,21 @@
 import type { WeReadCaller } from "./types";
+import { resolveWeReadKey } from "@/lib/local-secrets";
 
 const GATEWAY = "https://i.weread.qq.com/api/agent/gateway";
 
 export function createWeReadClient(options: {
   apiKey?: string;
+  apiKeyResolver?: () => string | undefined;
   skillVersion?: string;
   fetcher?: typeof fetch;
 }): WeReadCaller {
-  const apiKey = options.apiKey?.trim();
+  const staticApiKey = options.apiKey?.trim();
   const skillVersion = options.skillVersion?.trim() || "1.0.4";
   const fetcher = options.fetcher ?? fetch;
 
   return {
     async call<T>(apiName: string, params: Record<string, unknown> = {}) {
+      const apiKey = options.apiKeyResolver?.()?.trim() || staticApiKey;
       if (!apiKey) throw new Error("尚未配置微信读书 API Key");
       const response = await fetcher(GATEWAY, {
         method: "POST",
@@ -28,6 +31,10 @@ export function createWeReadClient(options: {
   };
 }
 
-export function getConfiguredWeReadClient() {
-  return createWeReadClient({ apiKey: process.env.WEREAD_API_KEY, skillVersion: process.env.WEREAD_SKILL_VERSION });
+export function getConfiguredWeReadClient(options: { keyResolver?: () => string | undefined; fetcher?: typeof fetch } = {}) {
+  return createWeReadClient({
+    apiKeyResolver: options.keyResolver ?? resolveWeReadKey,
+    skillVersion: process.env.WEREAD_SKILL_VERSION,
+    fetcher: options.fetcher,
+  });
 }
