@@ -9,38 +9,36 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest",
-    "test:watch": "vitest",
-    "db:generate": "drizzle-kit generate"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@dnd-kit/core": "latest",
     "@dnd-kit/sortable": "latest",
     "@dnd-kit/utilities": "latest",
-    "better-sqlite3": "latest",
+    "better-sqlite3": "12.4.1",
     "clsx": "latest",
     "date-fns": "latest",
     "drizzle-orm": "latest",
     "lucide-react": "latest",
     "next": "latest",
-    "openai": "latest",
+    "openai": "6.22.0",
     "react": "latest",
     "react-dom": "latest",
     "zod": "latest"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "latest",
-    "@testing-library/jest-dom": "latest",
+    "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "latest",
     "@types/better-sqlite3": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "drizzle-kit": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
-    "jsdom": "latest",
+    "jsdom": "26.1.0",
     "tailwindcss": "latest",
     "typescript": "latest",
-    "vitest": "latest"
+    "vitest": "3.2.7"
   }
 }

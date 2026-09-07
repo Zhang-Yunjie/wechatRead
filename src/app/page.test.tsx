@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import HomePage from "./page";
+import { HomeHeader } from "@/components/today/home-header";
 
-describe("HomePage", () => {
+describe("HomeHeader", () => {
   it("renders the reading companion shell", () => {
-    render(<HomePage />);
+    render(<HomeHeader />);
 
     expect(screen.getByText("阅读此刻")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "同步微信读书" })).toBeInTheDocument();

@@ -6,8 +6,8 @@ import { FeaturedBook } from "@/components/today/featured-book";
 import { QuickCapture } from "@/components/today/quick-capture";
 import { RecentThoughts } from "@/components/today/recent-thoughts";
 import { SideReading } from "@/components/today/side-reading";
+import { HomeHeader } from "@/components/today/home-header";
 import { EmptyState } from "@/components/empty-state";
-import { SyncButton } from "@/components/sync-button";
 
 async function TodayContent() {
   const data = await getDashboardData(getDatabase().db);
@@ -29,13 +29,7 @@ async function TodayContent() {
 export default function HomePage() {
   return (
     <div className="page-frame">
-      <header className="page-header">
-        <div>
-          <p className="eyebrow">MONDAY · SEPTEMBER 07</p>
-          <h1>阅读此刻</h1>
-        </div>
-        <SyncButton />
-      </header>
+      <HomeHeader />
       <Suspense fallback={<div className="page-loading">正在翻开今天的一页…</div>}><TodayContent /></Suspense>
     </div>
   );
